@@ -1,0 +1,317 @@
+﻿
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חידון בישול בירה</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #f8f3e9;
+            background-image: radial-gradient(#e6d2b5 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .quiz-container {
+            background: linear-gradient(135deg, #f9f5ec 0%, #f0e6d2 100%);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .option-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .option-card:hover {
+            transform: translateY(-3px);
+            border-color: #d4a24c;
+        }
+        .option-card.selected {
+            border-color: #b78628;
+            background-color: rgba(215, 170, 88, 0.1);
+        }
+        .option-card.correct {
+            border-color: #4caf50;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+        .option-card.incorrect {
+            border-color: #f44336;
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+        .progress-bar {
+            height: 8px;
+            background-color: #e0d0b7;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d4a24c 0%, #b78628 100%);
+            transition: width 0.5s ease;
+        }
+        .beer-icon {
+            color: #d4a24c;
+        }
+        .btn {
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(183, 134, 40, 0.2);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .result-container {
+            background: linear-gradient(135deg, #f9f5ec 0%, #f0e6d2 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen py-8 px-4 flex flex-col items-center justify-center">
+        <div class="quiz-container w-full max-w-2xl rounded-2xl p-6 md:p-8">
+            <div id="intro-screen" class="text-center">
+                <h1 class="text-3xl md:text-4xl font-bold text-amber-800 mb-6">חידון בישול בירה</h1>
+                <div class="flex justify-center mb-6">
+                    <svg class="w-20 h-20 beer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4 2h15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm0 4h15v14a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1V6zM6 8v10h11V8H6zm3 2a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm5 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"></path>
+                    </svg>
+                </div>
+                <p class="text-lg mb-8 text-amber-900">בחן את הידע שלך בנושא בישול בירה ביתית!</p>
+                <button id="start-btn" class="btn bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 px-8 rounded-full text-lg">
+                    התחל את החידון
+                </button>
+            </div>
+
+            <div id="quiz-screen" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-amber-800">חידון בישול בירה</h2>
+                    <div class="text-amber-700 font-bold">
+                        שאלה <span id="current-question">1</span> מתוך <span id="total-questions">5</span>
+                    </div>
+                </div>
+
+                <div class="progress-bar mb-6">
+                    <div class="progress-fill" style="width: 20%"></div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 id="question-text" class="text-xl md:text-2xl font-medium text-amber-900 mb-6"></h3>
+                    <div id="options-container" class="space-y-3"></div>
+                </div>
+
+                <div class="flex justify-between">
+                    <button id="prev-btn" class="btn bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg hidden">
+                        הקודם
+                    </button>
+                    <div class="flex-grow"></div>
+                    <button id="next-btn" class="btn bg-amber-700 hover:bg-amber-800 text-white font-medium py-2 px-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        הבא
+                    </button>
+                </div>
+            </div>
+
+            <div id="result-screen" class="hidden text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-amber-800 mb-4">תוצאות החידון</h2>
+                <div class="flex justify-center mb-6">
+                    <svg class="w-16 h-16 beer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4 2h15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm0 4h15v14a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1V6zM6 8v10h11V8H6zm3 2a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm5 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"></path>
+                    </svg>
+                </div>
+                <p class="text-lg mb-2 text-amber-900">הציון שלך:</p>
+                <p id="score-display" class="text-4xl font-bold text-amber-700 mb-6">0/5</p>
+                <div id="feedback-message" class="mb-8 text-lg text-amber-900"></div>
+                <div class="result-container rounded-xl p-6 mb-8">
+                    <h3 class="text-xl font-bold text-amber-800 mb-4">תשובות נכונות:</h3>
+                    <div id="answers-review" class="text-right space-y-4"></div>
+                </div>
+                <button id="restart-btn" class="btn bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 px-8 rounded-full text-lg">
+                    נסה שוב
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "מהו המרכיב העיקרי בבירה?",
+                options: ["לתת (מאלט)", "כשות", "שמרים", "סוכר"],
+                correctAnswer: 0
+            },
+            {
+                question: "איזה תהליך הופך את השעורה ללתת?",
+                options: ["תסיסה", "הנבטה", "בישול", "ייבוש"],
+                correctAnswer: 1
+            },
+            {
+                question: "מהו תפקיד הכשות בבירה?",
+                options: ["מוסיף מתיקות", "מוסיף מרירות וארומה", "מגביר את התסיסה", "מוסיף צבע"],
+                correctAnswer: 1
+            },
+            {
+                question: "באיזו טמפרטורה מתרחש תהליך המישון (Mashing)?",
+                options: ["20-30°C", "45-70°C", "78-100°C", "100-120°C"],
+                correctAnswer: 1
+            },
+            {
+                question: "איזה סוג בירה מאופיין בצבע כהה וטעמים של קפה ושוקולד?",
+                options: ["לאגר", "פילזנר", "סטאוט", "חיטה"],
+                correctAnswer: 2
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = Array(quizData.length).fill(null);
+        let selectedOption = null;
+
+        const introScreen = document.getElementById('intro-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQuestionEl = document.getElementById('current-question');
+        const totalQuestionsEl = document.getElementById('total-questions');
+        const progressFill = document.querySelector('.progress-fill');
+        const scoreDisplay = document.getElementById('score-display');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const answersReview = document.getElementById('answers-review');
+
+        // Initialize the quiz
+        totalQuestionsEl.textContent = quizData.length;
+
+        // Event listeners
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', goToNextQuestion);
+        prevBtn.addEventListener('click', goToPrevQuestion);
+        restartBtn.addEventListener('click', restartQuiz);
+
+        function startQuiz() {
+            introScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            selectedOption = userAnswers[currentQuestion];
+            questionText.textContent = quizData[currentQuestion].question;
+            optionsContainer.innerHTML = '';
+            
+            quizData[currentQuestion].options.forEach((option, index) => {
+                const optionCard = document.createElement('div');
+                optionCard.className = `option-card p-4 rounded-lg cursor-pointer bg-white ${selectedOption === index ? 'selected' : ''}`;
+                optionCard.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border-2 border-amber-700 flex items-center justify-center mr-3">
+                            ${selectedOption === index ? '<div class="w-3 h-3 rounded-full bg-amber-700"></div>' : ''}
+                        </div>
+                        <span class="text-lg">${option}</span>
+                    </div>
+                `;
+                optionCard.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionCard);
+            });
+
+            currentQuestionEl.textContent = currentQuestion + 1;
+            progressFill.style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`;
+            
+            // Update navigation buttons
+            prevBtn.classList.toggle('hidden', currentQuestion === 0);
+            nextBtn.textContent = currentQuestion === quizData.length - 1 ? 'סיים' : 'הבא';
+            nextBtn.disabled = selectedOption === null;
+        }
+
+        function selectOption(index) {
+            selectedOption = index;
+            userAnswers[currentQuestion] = index;
+            
+            // Update UI to show selected option
+            const options = optionsContainer.querySelectorAll('.option-card');
+            options.forEach((option, i) => {
+                option.classList.toggle('selected', i === index);
+                const radioCircle = option.querySelector('.w-6');
+                if (i === index) {
+                    radioCircle.innerHTML = '<div class="w-3 h-3 rounded-full bg-amber-700"></div>';
+                } else {
+                    radioCircle.innerHTML = '';
+                }
+            });
+            
+            nextBtn.disabled = false;
+        }
+
+        function goToNextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function goToPrevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            // Calculate score
+            score = userAnswers.reduce((total, answer, index) => {
+                return answer === quizData[index].correctAnswer ? total + 1 : total;
+            }, 0);
+            
+            scoreDisplay.textContent = `${score}/${quizData.length}`;
+            
+            // Set feedback message based on score
+            const percentage = (score / quizData.length) * 100;
+            if (percentage === 100) {
+                feedbackMessage.textContent = "מצוין! אתה מומחה אמיתי בבישול בירה! 🏆";
+            } else if (percentage >= 80) {
+                feedbackMessage.textContent = "כל הכבוד! יש לך ידע רב בבישול בירה! 🍻";
+            } else if (percentage >= 60) {
+                feedbackMessage.textContent = "לא רע! יש לך הבנה טובה בבישול בירה.";
+            } else if (percentage >= 40) {
+                feedbackMessage.textContent = "יש מקום לשיפור. כדאי ללמוד עוד על בישול בירה.";
+            } else {
+                feedbackMessage.textContent = "אל דאגה, בישול בירה הוא נושא מורכב. נסה שוב!";
+            }
+            
+            // Show correct answers
+            answersReview.innerHTML = '';
+            quizData.forEach((question, index) => {
+                const isCorrect = userAnswers[index] === question.correctAnswer;
+                const reviewItem = document.createElement('div');
+                reviewItem.className = `${isCorrect ? 'text-green-700' : 'text-red-700'}`;
+                reviewItem.innerHTML = `
+                    <p class="font-bold">${index + 1}. ${question.question}</p>
+                    <p>התשובה הנכונה: ${question.options[question.correctAnswer]}</p>
+                    ${!isCorrect ? `<p>התשובה שלך: ${question.options[userAnswers[index]]}</p>` : ''}
+                `;
+                answersReview.appendChild(reviewItem);
+            });
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = Array(quizData.length).fill(null);
+            selectedOption = null;
+            
+            resultScreen.classList.add('hidden');
+            introScreen.classList.remove('hidden');
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'945f9449422c7d98',t:'MTc0ODI4NjY5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
