@@ -1,316 +1,616 @@
 ﻿<!DOCTYPE html>
 <html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>חידון בישול בירה</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>חידון בירה בעברית</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: 'Heebo', sans-serif;
-            background-color: #f8f3e9;
-            background-image: radial-gradient(#e6d2b5 1px, transparent 1px);
-            background-size: 20px 20px;
+      body {
+        font-family: "Heebo", sans-serif;
+        background: linear-gradient(135deg, #f8b500 0%, #d17000 100%);
+        min-height: 100vh;
+      }
+      .beer-foam {
+        background: linear-gradient(to bottom, #fff9e6 0%, #f5e7c1 100%);
+        height: 40px;
+        border-radius: 50% 50% 0 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .beer-foam::before {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 10%;
+        width: 20%;
+        height: 20px;
+        background: #fff9e6;
+        border-radius: 50%;
+        box-shadow: 40px 0 0 #fff9e6, 80px 0 0 #fff9e6, 120px 0 0 #fff9e6,
+          160px 0 0 #fff9e6;
+      }
+      .beer-liquid {
+        background: linear-gradient(to bottom, #f5b833 0%, #e09900 100%);
+        position: relative;
+        height: 100%;
+        border-radius: 0 0 5px 5px;
+        overflow: hidden;
+      }
+      .beer-bubbles {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        bottom: -20px;
+        animation: bubble 2s infinite ease-in;
+      }
+      .beer-bubbles:nth-child(1) {
+        left: 10%;
+        animation-delay: 0.2s;
+        animation-duration: 2.5s;
+      }
+      .beer-bubbles:nth-child(2) {
+        left: 30%;
+        animation-delay: 0.6s;
+        animation-duration: 2.3s;
+      }
+      .beer-bubbles:nth-child(3) {
+        left: 50%;
+        animation-delay: 0.1s;
+        animation-duration: 1.8s;
+      }
+      .beer-bubbles:nth-child(4) {
+        left: 70%;
+        animation-delay: 0.7s;
+        animation-duration: 2.1s;
+      }
+      .beer-bubbles:nth-child(5) {
+        left: 90%;
+        animation-delay: 0.3s;
+        animation-duration: 2.2s;
+      }
+      @keyframes bubble {
+        0% {
+          bottom: -20px;
+          opacity: 0.5;
         }
-        .quiz-container {
-            background: linear-gradient(135deg, #f9f5ec 0%, #f0e6d2 100%);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        100% {
+          bottom: 100%;
+          opacity: 0;
         }
-        .option-card {
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        .option-card:hover {
-            transform: translateY(-3px);
-            border-color: #d4a24c;
-        }
-        .option-card.selected {
-            border-color: #b78628;
-            background-color: rgba(215, 170, 88, 0.1);
-        }
-        .option-card.correct {
-            border-color: #4caf50;
-            background-color: rgba(76, 175, 80, 0.1);
-        }
-        .option-card.incorrect {
-            border-color: #f44336;
-            background-color: rgba(244, 67, 54, 0.1);
-        }
-        .progress-bar {
-            height: 8px;
-            background-color: #e0d0b7;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #d4a24c 0%, #b78628 100%);
-            transition: width 0.5s ease;
-        }
-        .beer-icon {
-            color: #d4a24c;
-        }
-        .btn {
-            transition: all 0.3s ease;
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(183, 134, 40, 0.2);
-        }
-        .btn:active {
-            transform: translateY(0);
-        }
-        .result-container {
-            background: linear-gradient(135deg, #f9f5ec 0%, #f0e6d2 100%);
-        }
+      }
+      .option-card {
+        transition: all 0.3s ease;
+      }
+      .option-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .correct {
+        background-color: #4ade80 !important;
+        color: #064e3b;
+      }
+      .incorrect {
+        background-color: #f87171 !important;
+        color: #7f1d1d;
+      }
+      .progress-bar {
+        transition: width 0.5s ease;
+      }
+      .quiz-container {
+        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+      }
     </style>
-</head>
-<body>
-    <div class="min-h-screen py-8 px-4 flex flex-col items-center justify-center">
-        <div class="quiz-container w-full max-w-2xl rounded-2xl p-6 md:p-8">
-            <div id="intro-screen" class="text-center">
-                <h1 class="text-3xl md:text-4xl font-bold text-amber-800 mb-6">חידון בישול בירה</h1>
-                <div class="flex justify-center mb-6">
-                    <svg class="w-20 h-20 beer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M4 2h15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm0 4h15v14a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1V6zM6 8v10h11V8H6zm3 2a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm5 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"></path>
-                    </svg>
-                </div>
-                <p class="text-lg mb-8 text-amber-900">בחן את הידע שלך בנושא בישול בירה ביתית!</p>
-                <button id="start-btn" class="btn bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 px-8 rounded-full text-lg">
-                    התחל את החידון
-                </button>
+  </head>
+  <body class="text-right">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+      <div
+        class="quiz-container bg-amber-800 bg-opacity-90 rounded-lg shadow-2xl p-6 mb-8"
+      >
+        <div class="flex justify-between items-center mb-8">
+          <div class="w-16 h-24 relative">
+            <div class="beer-foam"></div>
+            <div class="beer-liquid h-20">
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
             </div>
-
-            <div id="quiz-screen" class="hidden">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold text-amber-800">חידון בישול בירה</h2>
-                    <div class="text-amber-700 font-bold">
-                        שאלה <span id="current-question">1</span> מתוך <span id="total-questions">5</span>
-                    </div>
-                </div>
-
-                <div class="progress-bar mb-6">
-                    <div class="progress-fill" style="width: 20%"></div>
-                </div>
-
-                <div class="mb-8">
-                    <h3 id="question-text" class="text-xl md:text-2xl font-medium text-amber-900 mb-6"></h3>
-                    <div id="options-container" class="space-y-3"></div>
-                </div>
-
-                <div class="flex justify-between">
-                    <button id="prev-btn" class="btn bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg hidden">
-                        הקודם
-                    </button>
-                    <div class="flex-grow"></div>
-                    <button id="next-btn" class="btn bg-amber-700 hover:bg-amber-800 text-white font-medium py-2 px-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                        הבא
-                    </button>
-                </div>
+          </div>
+          <h1 class="text-4xl font-bold text-amber-100 text-center">
+            חידון בירה מקצועי
+          </h1>
+          <div class="w-16 h-24 relative">
+            <div class="beer-foam"></div>
+            <div class="beer-liquid h-20">
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
             </div>
-
-            <div id="result-screen" class="hidden text-center">
-                <h2 class="text-2xl md:text-3xl font-bold text-amber-800 mb-4">תוצאות החידון</h2>
-                <div class="flex justify-center mb-6">
-                    <svg class="w-16 h-16 beer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M4 2h15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm0 4h15v14a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1V6zM6 8v10h11V8H6zm3 2a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm5 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"></path>
-                    </svg>
-                </div>
-                <p class="text-lg mb-2 text-amber-900">הציון שלך:</p>
-                <p id="score-display" class="text-4xl font-bold text-amber-700 mb-6">0/5</p>
-                <div id="feedback-message" class="mb-8 text-lg text-amber-900"></div>
-                <div class="result-container rounded-xl p-6 mb-8">
-                    <h3 class="text-xl font-bold text-amber-800 mb-4">תשובות נכונות:</h3>
-                    <div id="answers-review" class="text-right space-y-4"></div>
-                </div>
-                <button id="restart-btn" class="btn bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 px-8 rounded-full text-lg">
-                    נסה שוב
-                </button>
-            </div>
+          </div>
         </div>
+
+        <div id="start-screen" class="text-center py-10">
+          <h2 class="text-2xl font-bold text-amber-100 mb-6">
+            בחן את הידע שלך בבישול בירה!
+          </h2>
+          <p class="text-amber-200 mb-8 text-lg"></p>
+          <button
+            id="start-btn"
+            class="bg-amber-500 hover:bg-amber-600 text-amber-900 font-bold py-3 px-8 rounded-full text-xl transition-all transform hover:scale-105 shadow-lg"
+          >
+            התחל חידון
+          </button>
+        </div>
+
+        <div id="quiz-screen" class="hidden">
+          <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+              <span id="question-number" class="text-amber-200 font-bold"
+                >שאלה 1 מתוך 5</span
+              >
+              <span id="score-display" class="text-amber-200 font-bold"
+                >ניקוד: 0</span
+              >
+            </div>
+            <div class="w-full bg-amber-900 rounded-full h-4">
+              <div
+                id="progress-bar"
+                class="progress-bar bg-amber-400 h-4 rounded-full"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+
+          <div id="question-container" class="bg-amber-700 rounded-lg p-6 mb-6">
+            <h2
+              id="question-text"
+              class="text-2xl font-bold text-amber-100 mb-4"
+            ></h2>
+            <div
+              id="options-container"
+              class="grid grid-cols-1 md:grid-cols-2 gap-4"
+            ></div>
+          </div>
+
+          <div id="feedback" class="hidden bg-amber-600 rounded-lg p-4 mb-6">
+            <p id="feedback-text" class="text-amber-100 font-bold text-lg"></p>
+            <p id="explanation-text" class="text-amber-200 mt-2"></p>
+          </div>
+
+          <div class="flex justify-center">
+            <button
+              id="next-btn"
+              class="hidden bg-amber-500 hover:bg-amber-600 text-amber-900 font-bold py-2 px-6 rounded-full transition-all transform hover:scale-105 shadow-lg"
+            >
+              לשאלה הבאה
+            </button>
+          </div>
+        </div>
+
+        <div id="results-screen" class="hidden text-center py-10">
+          <h2 class="text-3xl font-bold text-amber-100 mb-4">
+            סיימת את החידון!
+          </h2>
+          <div class="beer-mug mx-auto w-32 h-48 relative mb-6">
+            <div class="beer-foam"></div>
+            <div class="beer-liquid h-40">
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
+              <div class="beer-bubbles"></div>
+            </div>
+          </div>
+          <p id="final-score" class="text-2xl text-amber-200 mb-6">
+            הניקוד הסופי שלך: 0 מתוך 5
+          </p>
+          <p id="score-message" class="text-xl text-amber-300 mb-8"></p>
+          <button
+            id="restart-btn"
+            class="bg-amber-500 hover:bg-amber-600 text-amber-900 font-bold py-3 px-8 rounded-full text-xl transition-all transform hover:scale-105 shadow-lg"
+          >
+            נסה שוב
+          </button>
+        </div>
+      </div>
     </div>
 
     <script>
-        const quizData = [
-            {
-                question: "מהו המרכיב העיקרי בבירה?",
-                options: ["לתת (מאלט)", "כשות", "שמרים", "סוכר"],
-                correctAnswer: 0
-            },
-            {
-                question: "איזה תהליך הופך את השעורה ללתת?",
-                options: ["תסיסה", "הנבטה", "בישול", "ייבוש"],
-                correctAnswer: 1
-            },
-            {
-                question: "מהו תפקיד הכשות בבירה?",
-                options: ["מוסיף מתיקות", "מוסיף מרירות וארומה", "מגביר את התסיסה", "מוסיף צבע"],
-                correctAnswer: 1
-            },
-            {
-                question: "באיזו טמפרטורה מתרחש תהליך המישון (Mashing)?",
-                options: ["20-30°C", "45-70°C", "78-100°C", "100-120°C"],
-                correctAnswer: 1
-            },
-            {
-                question: "איזה סוג בירה מאופיין בצבע כהה וטעמים של קפה ושוקולד?",
-                options: ["לאגר", "פילזנר", "סטאוט", "חיטה"],
-                correctAnswer: 2
-            }
-        ];
+      const questions = [
+        {
+          question: "מהו המרכיב העיקרי בבירה?",
+          options: ["לתת (מאלט)", "כשות", "שמרים", "מים"],
+          correctAnswer: 0,
+          explanation:
+            "לתת (מאלט) הוא המרכיב העיקרי בבירה, המיוצר משעורה שהונבטה ויובשה.",
+        },
+        {
+          question: "איזה חומר מוסיף מרירות לבירה?",
+          options: ["לתת", "כשות", "שמרים", "סוכר"],
+          correctAnswer: 1,
+          explanation: "כשות (הומולוס) מוסיף מרירות, טעם וארומה לבירה.",
+        },
+        {
+          question: "מהי טמפרטורת ההתססה האידיאלית לבירה מסוג אייל (Ale)?",
+          options: ["5-10°C", "12-15°C", "18-22°C", "25-30°C"],
+          correctAnswer: 2,
+          explanation:
+            "בירות אייל מותססות בטמפרטורות גבוהות יחסית, בין 18-22°C.",
+        },
+        {
+          question: "מהו תהליך ה-'מאשינג' (Mashing)?",
+          options: [
+            "תהליך הוספת הכשות",
+            "תהליך התסיסה",
+            "תהליך המיצוי של הסוכרים מהלתת",
+            "תהליך הבקבוק",
+          ],
+          correctAnswer: 2,
+          explanation:
+            "מאשינג הוא תהליך בו מערבבים את הלתת הטחון במים חמים כדי למצות את הסוכרים.",
+        },
+        {
+          question: "מהו IBU במדידת בירה?",
+          options: [
+            "מדד לצבע הבירה",
+            "מדד למרירות הבירה",
+            "מדד לאחוז האלכוהול",
+            "מדד לצפיפות הבירה",
+          ],
+          correctAnswer: 1,
+          explanation:
+            "IBU (International Bitterness Units) הוא מדד למרירות הבירה.",
+        },
+        {
+          question: "איזה סוג בירה מאופיין בצבע כהה וטעמים של קפה ושוקולד?",
+          options: ["פילזנר", "חיטה", "סטאוט", "IPA"],
+          correctAnswer: 2,
+          explanation:
+            "בירות סטאוט מאופיינות בצבע כהה וטעמים עשירים של קפה, שוקולד ולתת קלוי.",
+        },
+        {
+          question: "מהו 'דריי הופינג' (Dry Hopping)?",
+          options: [
+            "ייבוש הכשות לפני השימוש",
+            "הוספת כשות בסוף הבישול",
+            "הוספת כשות במהלך התסיסה",
+            "תהליך קלייה של הלתת",
+          ],
+          correctAnswer: 2,
+          explanation:
+            "דריי הופינג הוא תהליך הוספת כשות במהלך או אחרי התסיסה להעשרת הארומה.",
+        },
+        {
+          question: "מהו תפקיד השמרים בתהליך ייצור הבירה?",
+          options: [
+            "להוסיף מרירות",
+            "להמיר סוכרים לאלכוהול ופחמן דו-חמצני",
+            "לסנן את הבירה",
+            "להוסיף צבע",
+          ],
+          correctAnswer: 1,
+          explanation:
+            "השמרים ממירים את הסוכרים שמוצו מהלתת לאלכוהול ופחמן דו-חמצני בתהליך התסיסה.",
+        },
+        {
+          question: "מהו 'ספארג'ינג' (Sparging)?",
+          options: [
+            "תהליך סינון הבירה",
+            "שטיפת הלתת במים חמים",
+            "הוספת תבלינים לבירה",
+            "קירור התירוש",
+          ],
+          correctAnswer: 1,
+          explanation:
+            "ספארג'ינג הוא תהליך שטיפת הלתת במים חמים לאחר המאשינג כדי למצות את הסוכרים הנותרים.",
+        },
+        {
+          question: "מהו חוק הטהרה הגרמני (Reinheitsgebot)?",
+          options: [
+            "חוק המגביל את כמות האלכוהול בבירה",
+            "חוק המגדיר את המרכיבים המותרים בבירה",
+            "חוק המגדיר את תהליך הייצור",
+            "חוק המגדיר את מחיר הבירה",
+          ],
+          correctAnswer: 1,
+          explanation:
+            "חוק הטהרה הגרמני משנת 1516 מגדיר שבירה יכולה להכיל רק מים, לתת וכשות (ומאוחר יותר נוספו שמרים).",
+        },
+        {
+          question: "מהו 'קראש' (Krausen)?",
+          options: [
+            "סוג של לתת",
+            "קצף שנוצר בשלב התסיסה הפעילה",
+            "כלי לסינון הבירה",
+            "תהליך הקרבונציה",
+          ],
+          correctAnswer: 1,
+          explanation:
+            "קראש הוא שכבת הקצף שנוצרת על פני הבירה במהלך התסיסה הפעילה.",
+        },
+        {
+          question: "איזה סוג בירה מקורו בצ'כיה?",
+          options: ["פילזנר", "הפה וייס", "אייל בריטי", "דופל"],
+          correctAnswer: 0,
+          explanation:
+            "בירת פילזנר מקורה בעיר פילזן שבצ'כיה, והיא פותחה במאה ה-19.",
+        },
+        {
+          question: "מהו 'פרימנטר' (Fermenter)?",
+          options: [
+            "מכשיר למדידת צפיפות הבירה",
+            "כלי בו מתרחשת התסיסה",
+            "מכשיר לטחינת הלתת",
+            "מסנן לבירה",
+          ],
+          correctAnswer: 1,
+          explanation: "פרימנטר הוא הכלי בו מתרחשת תסיסת הבירה לאחר הבישול.",
+        },
+        {
+          question: "מהו 'וורט צ'ילר' (Wort Chiller)?",
+          options: [
+            "מכשיר לקירור התירוש",
+            "מכשיר לחימום המים",
+            "מכשיר לסינון הבירה",
+            "מכשיר לערבוב הלתת",
+          ],
+          correctAnswer: 0,
+          explanation:
+            "וורט צ'ילר הוא מכשיר המשמש לקירור מהיר של התירוש (נוזל הבירה לפני התסיסה) לטמפרטורת התסיסה.",
+        },
+        {
+          question: "מהו 'בוטלינג באקט' (Bottling Bucket)?",
+          options: [
+            "דלי לאחסון הבקבוקים",
+            "דלי עם ברז לבקבוק הבירה",
+            "דלי לשטיפת הבקבוקים",
+            "דלי לאחסון הלתת",
+          ],
+          correctAnswer: 1,
+          explanation:
+            "בוטלינג באקט הוא דלי עם ברז בתחתיתו המשמש למילוי בקבוקי הבירה בצורה נוחה.",
+        },
+        {
+          question: "מהו 'היידרומטר' (Hydrometer)?",
+          options: [
+            "מכשיר למדידת רמת האלכוהול",
+            "מכשיר למדידת צפיפות הנוזל",
+            "מכשיר למדידת רמת החומציות",
+            "מכשיר למדידת טמפרטורה",
+          ],
+          correctAnswer: 1,
+          explanation:
+            "היידרומטר הוא מכשיר המודד את צפיפות הנוזל, המאפשר לחשב את תכולת הסוכר ולהעריך את אחוז האלכוהול הפוטנציאלי.",
+        },
+        {
+          question: "מהו 'לאגרינג' (Lagering)?",
+          options: [
+            "תהליך התסיסה",
+            "תהליך הבישול",
+            "תהליך אחסון הבירה בטמפרטורה נמוכה",
+            "תהליך הוספת הכשות",
+          ],
+          correctAnswer: 2,
+          explanation:
+            "לאגרינג הוא תהליך אחסון והבשלת הבירה בטמפרטורה נמוכה לתקופה ממושכת.",
+        },
+        {
+          question: "מהו 'פראימינג שוגר' (Priming Sugar)?",
+          options: [
+            "סוכר המוסף בתחילת התסיסה",
+            "סוכר המוסף לפני הבקבוק ליצירת קרבונציה",
+            "סוכר המוסף במהלך המאשינג",
+            "סוכר המוסף לשיפור הטעם",
+          ],
+          correctAnswer: 1,
+          explanation:
+            "פראימינג שוגר הוא סוכר המוסף לבירה לפני הבקבוק כדי ליצור קרבונציה טבעית בבקבוק.",
+        },
+        {
+          question: "מהו 'גריסט' (Grist)?",
+          options: [
+            "תערובת הלתת הטחון",
+            "שארית הלתת לאחר המאשינג",
+            "סוג של לתת",
+            "סוג של כשות",
+          ],
+          correctAnswer: 0,
+          explanation: "גריסט הוא תערובת הלתת הטחון המשמשת לייצור הבירה.",
+        },
+        {
+          question: "מהו 'הוט ברייק' (Hot Break)?",
+          options: [
+            "שלב בתהליך המאשינג",
+            "חלבונים שקורסים במהלך הרתיחה",
+            "תקלה במערכת החימום",
+            "הפסקה במהלך הבישול",
+          ],
+          correctAnswer: 1,
+          explanation:
+            "הוט ברייק הוא תהליך בו חלבונים קורסים ושוקעים במהלך רתיחת התירוש.",
+        },
+      ];
 
-        let currentQuestion = 0;
-        let score = 0;
-        let userAnswers = Array(quizData.length).fill(null);
-        let selectedOption = null;
+      let currentQuestions = [];
+      let currentQuestionIndex = 0;
+      let score = 0;
+      let answeredQuestions = 0;
 
-        const introScreen = document.getElementById('intro-screen');
-        const quizScreen = document.getElementById('quiz-screen');
-        const resultScreen = document.getElementById('result-screen');
-        const startBtn = document.getElementById('start-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const prevBtn = document.getElementById('prev-btn');
-        const restartBtn = document.getElementById('restart-btn');
-        const questionText = document.getElementById('question-text');
-        const optionsContainer = document.getElementById('options-container');
-        const currentQuestionEl = document.getElementById('current-question');
-        const totalQuestionsEl = document.getElementById('total-questions');
-        const progressFill = document.querySelector('.progress-fill');
-        const scoreDisplay = document.getElementById('score-display');
-        const feedbackMessage = document.getElementById('feedback-message');
-        const answersReview = document.getElementById('answers-review');
+      document.getElementById("start-btn").addEventListener("click", startQuiz);
+      document
+        .getElementById("next-btn")
+        .addEventListener("click", nextQuestion);
+      document
+        .getElementById("restart-btn")
+        .addEventListener("click", restartQuiz);
 
-        // Initialize the quiz
-        totalQuestionsEl.textContent = quizData.length;
+      function startQuiz() {
+        // Select 5 random questions
+        currentQuestions = getRandomQuestions(questions, 5);
+        currentQuestionIndex = 0;
+        score = 0;
+        answeredQuestions = 0;
 
-        // Event listeners
-        startBtn.addEventListener('click', startQuiz);
-        nextBtn.addEventListener('click', goToNextQuestion);
-        prevBtn.addEventListener('click', goToPrevQuestion);
-        restartBtn.addEventListener('click', restartQuiz);
+        document.getElementById("start-screen").classList.add("hidden");
+        document.getElementById("quiz-screen").classList.remove("hidden");
+        document.getElementById("results-screen").classList.add("hidden");
 
-        function startQuiz() {
-            introScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
-            loadQuestion();
+        showQuestion(currentQuestionIndex);
+        updateProgressBar();
+      }
+
+      function getRandomQuestions(allQuestions, count) {
+        const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+      }
+
+      function showQuestion(index) {
+        const question = currentQuestions[index];
+        document.getElementById("question-number").textContent = `שאלה ${
+          index + 1
+        } מתוך 5`;
+        document.getElementById("question-text").textContent =
+          question.question;
+
+        const optionsContainer = document.getElementById("options-container");
+        optionsContainer.innerHTML = "";
+
+        question.options.forEach((option, i) => {
+          const optionCard = document.createElement("div");
+          optionCard.className =
+            "option-card bg-amber-600 hover:bg-amber-500 text-amber-100 p-4 rounded-lg cursor-pointer text-center";
+          optionCard.textContent = option;
+          optionCard.dataset.index = i;
+          optionCard.addEventListener("click", checkAnswer);
+          optionsContainer.appendChild(optionCard);
+        });
+
+        document.getElementById("feedback").classList.add("hidden");
+        document.getElementById("next-btn").classList.add("hidden");
+      }
+
+      function checkAnswer(e) {
+        const selectedIndex = parseInt(e.target.dataset.index);
+        const question = currentQuestions[currentQuestionIndex];
+        const options = document.querySelectorAll(".option-card");
+
+        // Disable all options
+        options.forEach((option) => {
+          option.removeEventListener("click", checkAnswer);
+          option.classList.remove("hover:bg-amber-500");
+          option.classList.add("cursor-default");
+        });
+
+        // Show correct and incorrect answers
+        options[question.correctAnswer].classList.add("correct");
+
+        if (selectedIndex === question.correctAnswer) {
+          score++;
+          document.getElementById(
+            "score-display"
+          ).textContent = `ניקוד: ${score}`;
+          document.getElementById("feedback-text").textContent =
+            "תשובה נכונה! 🍻";
+        } else {
+          options[selectedIndex].classList.add("incorrect");
+          document.getElementById("feedback-text").textContent =
+            "תשובה שגויה! 😔";
         }
 
-        function loadQuestion() {
-            selectedOption = userAnswers[currentQuestion];
-            questionText.textContent = quizData[currentQuestion].question;
-            optionsContainer.innerHTML = '';
-            
-            quizData[currentQuestion].options.forEach((option, index) => {
-                const optionCard = document.createElement('div');
-                optionCard.className = `option-card p-4 rounded-lg cursor-pointer bg-white ${selectedOption === index ? 'selected' : ''}`;
-                optionCard.innerHTML = `
-                    <div class="flex items-center">
-                        <div class="w-6 h-6 rounded-full border-2 border-amber-700 flex items-center justify-center mr-3">
-                            ${selectedOption === index ? '<div class="w-3 h-3 rounded-full bg-amber-700"></div>' : ''}
-                        </div>
-                        <span class="text-lg">${option}</span>
-                    </div>
-                `;
-                optionCard.addEventListener('click', () => selectOption(index));
-                optionsContainer.appendChild(optionCard);
-            });
+        document.getElementById("explanation-text").textContent =
+          question.explanation;
+        document.getElementById("feedback").classList.remove("hidden");
+        document.getElementById("next-btn").classList.remove("hidden");
 
-            currentQuestionEl.textContent = currentQuestion + 1;
-            progressFill.style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`;
-            
-            // Update navigation buttons
-            prevBtn.classList.toggle('hidden', currentQuestion === 0);
-            nextBtn.textContent = currentQuestion === quizData.length - 1 ? 'סיים' : 'הבא';
-            nextBtn.disabled = selectedOption === null;
+        answeredQuestions++;
+        updateProgressBar();
+      }
+
+      function nextQuestion() {
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < currentQuestions.length) {
+          showQuestion(currentQuestionIndex);
+        } else {
+          showResults();
+        }
+      }
+
+      function updateProgressBar() {
+        const progressPercentage = (answeredQuestions / 5) * 100;
+        document.getElementById(
+          "progress-bar"
+        ).style.width = `${progressPercentage}%`;
+      }
+
+      function showResults() {
+        document.getElementById("quiz-screen").classList.add("hidden");
+        document.getElementById("results-screen").classList.remove("hidden");
+        document.getElementById(
+          "final-score"
+        ).textContent = `הניקוד הסופי שלך: ${score} מתוך 5`;
+
+        let message = "";
+        if (score === 5) {
+          message = "מושלם! אתה מומחה אמיתי בבישול בירה! 🏆";
+        } else if (score >= 3) {
+          message = "כל הכבוד! יש לך ידע טוב בבישול בירה! 🍺";
+        } else {
+          message = "יש מקום לשיפור. נסה שוב ולמד עוד על בישול בירה! 📚";
         }
 
-        function selectOption(index) {
-            selectedOption = index;
-            userAnswers[currentQuestion] = index;
-            
-            // Update UI to show selected option
-            const options = optionsContainer.querySelectorAll('.option-card');
-            options.forEach((option, i) => {
-                option.classList.toggle('selected', i === index);
-                const radioCircle = option.querySelector('.w-6');
-                if (i === index) {
-                    radioCircle.innerHTML = '<div class="w-3 h-3 rounded-full bg-amber-700"></div>';
-                } else {
-                    radioCircle.innerHTML = '';
-                }
-            });
-            
-            nextBtn.disabled = false;
-        }
+        document.getElementById("score-message").textContent = message;
+      }
 
-        function goToNextQuestion() {
-            if (currentQuestion < quizData.length - 1) {
-                currentQuestion++;
-                loadQuestion();
-            } else {
-                showResults();
-            }
-        }
-
-        function goToPrevQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                loadQuestion();
-            }
-        }
-
-        function showResults() {
-            quizScreen.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
-            
-            // Calculate score
-            score = userAnswers.reduce((total, answer, index) => {
-                return answer === quizData[index].correctAnswer ? total + 1 : total;
-            }, 0);
-            
-            scoreDisplay.textContent = `${score}/${quizData.length}`;
-            
-            // Set feedback message based on score
-            const percentage = (score / quizData.length) * 100;
-            if (percentage === 100) {
-                feedbackMessage.textContent = "מצוין! אתה מומחה אמיתי בבישול בירה! 🏆";
-            } else if (percentage >= 80) {
-                feedbackMessage.textContent = "כל הכבוד! יש לך ידע רב בבישול בירה! 🍻";
-            } else if (percentage >= 60) {
-                feedbackMessage.textContent = "לא רע! יש לך הבנה טובה בבישול בירה.";
-            } else if (percentage >= 40) {
-                feedbackMessage.textContent = "יש מקום לשיפור. כדאי ללמוד עוד על בישול בירה.";
-            } else {
-                feedbackMessage.textContent = "אל דאגה, בישול בירה הוא נושא מורכב. נסה שוב!";
-            }
-            
-            // Show correct answers
-            answersReview.innerHTML = '';
-            quizData.forEach((question, index) => {
-                const isCorrect = userAnswers[index] === question.correctAnswer;
-                const reviewItem = document.createElement('div');
-                reviewItem.className = `${isCorrect ? 'text-green-700' : 'text-red-700'}`;
-                reviewItem.innerHTML = `
-                    <p class="font-bold">${index + 1}. ${question.question}</p>
-                    <p>התשובה הנכונה: ${question.options[question.correctAnswer]}</p>
-                    ${!isCorrect ? `<p>התשובה שלך: ${question.options[userAnswers[index]]}</p>` : ''}
-                `;
-                answersReview.appendChild(reviewItem);
-            });
-        }
-
-        function restartQuiz() {
-            currentQuestion = 0;
-            score = 0;
-            userAnswers = Array(quizData.length).fill(null);
-            selectedOption = null;
-            
-            resultScreen.classList.add('hidden');
-            introScreen.classList.remove('hidden');
-        }
+      function restartQuiz() {
+        startQuiz();
+      }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'945f9449422c7d98',t:'MTc0ODI4NjY5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'946d56d4c238c22f',t:'MTc0ODQzMDk3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
 </html>
